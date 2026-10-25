@@ -1,57 +1,31 @@
-![PAMPLEJUCE](assets/images/pamplejuce.png)
-[![](https://github.com/sudara/pamplejuce/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/sudara/pamplejuce/actions)
+# Simple Gain
 
-Pamplejuce is a ~~template~~ lifestyle for creating and building JUCE plugins in 2026.
+A JUCE audio effect learning project by YohanSenanayake, based on [Pamplejuce](https://github.com/sudara/pamplejuce).
 
-Out-of-the-box, it:
+We are working through the workflow one stage at a time: setup, baseline build, gain implementation and tests, debugging, then release packaging.
 
-1. Runs C++23
-2. Uses JUCE 9.x as a git submodule (tracking develop).
-3. Uses CPM for dependency management.
-3. Relies on CMake 3.25 and higher for cross-platform building.
-4. Has [Catch2](https://github.com/catchorg/Catch2) v3.8.1 for the test framework and runner.
-5. Includes a `Tests` target and a `Benchmarks` target with examples to get started quickly.
-6. Has [Melatonin Inspector](https://github.com/sudara/melatonin_inspector) installed as a JUCE module to help relieve headaches when building plugin UI.
+## Current stage: project setup
 
-It also has integration with GitHub Actions, specifically:
+- Internal CMake target: `SimpleGain`; DAW display name: `Simple Gain`.
+- Formats: VST3 and Standalone, targeting Windows and Linux.
+- IDE: VS Code with the CMake Tools and C/C++ extensions.
+- Intel IPP disabled; Windows code signing deferred.
+- Audio processing and UI remain the template's pass-through demo.
 
-1. Building and testing cross-platform (linux, macOS, Windows) binaries
-2. Running tests and benchmarks in CI
-3. Running [pluginval](http://github.com/tracktion/pluginval) 1.x against the binaries for plugin validation
-4. Config for [installing Intel IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html)
-5. [Code signing and notarization on macOS](https://melatonin.dev/blog/how-to-code-sign-and-notarize-macos-audio-plugins-in-ci/)
-6. [Windows code signing via Azure Trusted Signing](https://melatonin.dev/blog/code-signing-on-windows-with-azure-trusted-signing/)
+`CMakeLists.txt` describes what to build. `source/` contains the processor and editor. `tests/` contains the template's Catch2 tests. `.github/workflows/build_and_test.yml` builds and validates on Windows and Linux and prepares installer/ZIP artifacts. Tag-triggered releases are drafts for review.
 
-It also contains:
+Dependencies are Git submodules pinned to commits. Initialize them using:
 
-1. A `.gitignore` for all platforms.
-2. A `.clang-format` file for keeping code tidy.
-3. A `VERSION` file that will propagate through JUCE and your app.
-4. A ton of useful comments and options around the CMake config.
+```bash
+git submodule update --init --recursive
+```
 
-## How does this all work at a high level?
+This retrieves JUCE, the template CMake helpers, and bundled modules; it does not compile the plugin. Avoid `--remote` while learning so dependency versions stay reproducible.
 
-Check out the [official Pamplejuce documentation](https://melatonin.dev/manuals/pamplejuce/how-does-this-all-work/).
+## Next stage: baseline build
 
-[![Arc - 2024-10-01 51@2x](https://github.com/user-attachments/assets/01d19d2d-fbac-481f-8cec-e9325b2abe57)](https://melatonin.dev/manuals/pamplejuce/how-does-this-all-work/)
+Check the compiler, CMake, native JUCE development dependencies, and build tool first. Ninja is recommended with VS Code; it is not currently installed on the development machine. We will configure and build the unchanged demo together in the next stage.
 
-## Setting up for YOUR project
+Development builds will use **Debug** for breakpoints and diagnostics. Use **Release** later for music sessions and distribution. CMake configure/build/test commands are recorded in `CLAUDE.md` (also linked as `AGENTS.md`).
 
-This is a template repo!
-
-That means you can click "[Use this template](https://github.com/sudara/pamplejuce/generate)" here or at the top of the page to get your own copy (not fork) of the repo. Then you can make it private or keep it public, up to you.
-
-Then check out the [documentation](https://melatonin.dev/manuals/pamplejuce/setting-your-project-up/) so you know what to tweak.
-
-**Using an AI coding agent?** The included `CLAUDE.md` / `AGENTS.md` has a first-time setup wizard — just ask your agent to set up the project and it will walk you through naming, CI configuration, and code signing.
-
-> [!NOTE]
-> Tests will immediately run and fail (go red) until you [set up code signing](https://melatonin.dev/manuals/pamplejuce/getting-started/code-signing/).
-
-## Having Issues?
-
-Thanks to everyone who has contributed to the repository. 
-
-This repository covers a _lot_ of ground. JUCE itself has a lot of surface area. It's a group effort to maintain the garden and keep things nice!
-
-If something isn't just working out of the box — *it's probably not just you* — others are running into the problem, too, I promise. Check out [the official docs](https://melatonin.dev/manuals/pamplejuce), then please do [open an issue](https://github.com/sudara/pamplejuce/issues/new)!
+CI and installer configuration have not been exercised yet. The template's commercial EULA is excluded from the installer pending a license review before distribution.
