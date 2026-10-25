@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Configure VST3 debugging",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "-S", "${workspaceFolder}",
+                "-B", "${workspaceFolder}/Builds",
+                "-G", "Ninja",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DJUCE_BUILD_EXTRAS=ON"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build VST3 and AudioPluginHost",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build", "${workspaceFolder}/Builds",
+                "--config", "Debug",
+                "--target", "SimpleGain_VST3", "AudioPluginHost",
+                "--parallel", "2"
+            ],
+            "dependsOn": "Configure VST3 debugging",
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}

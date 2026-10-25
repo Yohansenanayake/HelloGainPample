@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Learning Workflow
 
-Work one stage at a time and explain the changes. The current stage is project setup; do not implement gain processing, new DSP tests, debugging integration, or release publishing until the user moves to that stage.
+Work one stage at a time and explain the changes. The current stage is local VST3 debugging with JUCE AudioPluginHost. The baseline plugin has been built and the Standalone tried. Do not implement gain processing, new DSP tests, or release publishing until the user moves to that stage.
 
 ## About This Project
 
