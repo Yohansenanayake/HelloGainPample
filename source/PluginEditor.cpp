@@ -1,9 +1,15 @@
 #include "PluginEditor.h"
 
 PluginEditor::PluginEditor (PluginProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p), processorRef (p),
+      gainAttachment (processorRef.parameters, "gain", gainSlider)
 {
-    juce::ignoreUnused (processorRef);
+    gainSlider.setSliderStyle (juce::Slider::LinearHorizontal);
+    gainSlider.setTextBoxStyle (juce::Slider::TextBoxRight, false, 80, 24);
+    gainSlider.setTextValueSuffix (" x");
+    gainSlider.setTitle ("Gain");
+    addAndMakeVisible (gainSlider);
+    addAndMakeVisible (gainLabel);
 
     addAndMakeVisible (inspectButton);
 
@@ -36,13 +42,14 @@ void PluginEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (16.0f);
     auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-    g.drawText (helloWorld, area.removeFromTop (150), juce::Justification::centred, false);
+    g.drawText (helloWorld, area.removeFromTop (40), juce::Justification::centred, false);
 }
 
 void PluginEditor::resized()
 {
-    // layout the positions of your child components here
-    auto area = getLocalBounds();
-    area.removeFromBottom(50);
-    inspectButton.setBounds (getLocalBounds().withSizeKeepingCentre(100, 50));
+    auto area = getLocalBounds().reduced (20);
+    area.removeFromTop (40);
+    gainLabel.setBounds (area.removeFromTop (24));
+    gainSlider.setBounds (area.removeFromTop (48));
+    inspectButton.setBounds (area.removeFromBottom (40).withSizeKeepingCentre (120, 30));
 }

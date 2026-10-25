@@ -13,6 +13,7 @@ public:
 
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
 
+    using juce::AudioProcessor::processBlock;
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     juce::AudioProcessorEditor* createEditor() override;
@@ -34,6 +35,11 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState parameters;
+
 private:
+    std::atomic<float>* gainParameter = nullptr;
+    juce::SmoothedValue<float> smoothedGain { 0.5f };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
 };
