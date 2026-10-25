@@ -49,6 +49,19 @@ The attachment is declared after the slider so it is destroyed first. It remains
 
 Manual check: press F5, open the Simple Gain editor, and also use the host node's **Show all parameters** view. Changes in either control should update the other and change the audio. Save the graph, close the host, reopen it, and confirm the editor displays the restored value.
 
+## Build binaries without debugging
+
+Press **Ctrl+Shift+B** in VS Code and select **Build plugin binaries (Debug)** or **Build plugin binaries (Release)**. Both configure first, then incrementally build VST3 and Standalone. They do not start a program, attach GDB, build AudioPluginHost, or package a release. F5 remains the separate host-debugging workflow.
+
+Debug reuses `Builds/`; Release uses `Builds/Release/` so it cannot switch the existing Debug cache into Release mode. Each folder keeps its own CMake cache, Ninja build rules, and compiled object files for incremental builds; artifact subfolders only hold finished binaries. Both formats appear under:
+
+| Configuration | Output directory |
+|---|---|
+| Debug | `Builds/SimpleGain_artefacts/Debug/` |
+| Release | `Builds/Release/SimpleGain_artefacts/Release/` |
+
+The `VST3/` subfolder contains `Simple Gain.vst3`; `Standalone/` contains the executable. A Debug binary includes debugging information but runs normally without a debugger when opened directly. Release enables optimization. The first Release build compiles its own dependencies and can take longer.
+
 ## Debug the VST3 on Linux
 
 The baseline Debug VST3 and Standalone have been built, and the Standalone has been tried. The same host workflow can now be used to step through gain processing.

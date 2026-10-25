@@ -6,9 +6,12 @@
             "type": "process",
             "command": "cmake",
             "args": [
-                "-S", "${workspaceFolder}",
-                "-B", "${workspaceFolder}/Builds",
-                "-G", "Ninja",
+                "-S",
+                "${workspaceFolder}",
+                "-B",
+                "${workspaceFolder}/Builds",
+                "-G",
+                "Ninja",
                 "-DCMAKE_BUILD_TYPE=Debug",
                 "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
                 "-DJUCE_BUILD_EXTRAS=ON"
@@ -20,13 +23,79 @@
             "type": "process",
             "command": "cmake",
             "args": [
-                "--build", "${workspaceFolder}/Builds",
-                "--config", "Debug",
-                "--target", "SimpleGain_VST3", "AudioPluginHost",
-                "--parallel", "2"
+                "--build",
+                "${workspaceFolder}/Builds",
+                "--config",
+                "Debug",
+                "--target",
+                "SimpleGain_VST3",
+                "AudioPluginHost",
+                "--parallel",
+                "2"
             ],
             "dependsOn": "Configure VST3 debugging",
-            "problemMatcher": ["$gcc"]
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build plugin binaries (Debug)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/Builds",
+                "--config",
+                "Debug",
+                "--target",
+                "SimpleGain_VST3",
+                "SimpleGain_Standalone",
+                "--parallel",
+                "2"
+            ],
+            "dependsOn": "Configure VST3 debugging",
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Configure plugin Release",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "-S",
+                "${workspaceFolder}",
+                "-B",
+                "${workspaceFolder}/Builds/Release",
+                "-G",
+                "Ninja",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DJUCE_BUILD_EXTRAS=OFF"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build plugin binaries (Release)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/Builds/Release",
+                "--config",
+                "Release",
+                "--target",
+                "SimpleGain_VST3",
+                "SimpleGain_Standalone",
+                "--parallel",
+                "2"
+            ],
+            "dependsOn": "Configure plugin Release",
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }

@@ -57,6 +57,11 @@ include(PamplejuceFunctions)
 # On Github Actions, this is done as a part of actions/checkout
 add_subdirectory(JUCE)
 
+# Bound GCC's LTO parallelism instead of falling back to serial linking under Ninja.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(juce_recommended_lto_flags INTERFACE $<$<CONFIG:Release>:-flto=2>)
+endif()
+
 # Add any other modules you want modules here, before the juce_add_plugin call
 # juce_add_module(modules/my_module)
 
